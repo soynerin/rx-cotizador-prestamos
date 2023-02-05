@@ -6,12 +6,18 @@ import { formatearDinero } from "./helpers";
 function App() {
 
   const [cantidad, setCantidad] = useState(10000);
+  const [plazo, setPlazo] = useState(6);
+
   const MIN = 0;
   const MAX = 20000;
   const STEP = 100;
 
   const handleChangeCantidad = (e) => {
     setCantidad(e.target.value);
+  }
+
+  const handleChangePlazo = (e) => {
+       setPlazo(e.target.value);
   }
 
   const handleClickDecrementarCantidad = () => {
@@ -45,7 +51,18 @@ function App() {
         step={STEP} />
 
         <p className="text-green-500 font-bold text-5xl my-5">{formatearDinero(cantidad)}</p>
-    </div>
+
+        <h2 className="mt-10 text-2xl font-extrabold text-slate-50 text-center">Elije un <span className="text-green-500 font-bold text-2xl">plazo</span> a pagar</h2>
+
+        <select 
+          className="mt-5 w-full text-center text-2xl text-gray-900 rounded-lg shadow-lg border border-gray-900" 
+          value={plazo} 
+          onChange={handleChangePlazo}>
+          <option value="6">6 meses</option>
+          <option value="12">12 meses</option>
+          <option value="24">24 meses</option>
+        </select>
+    </div>    
   )
 }
 
