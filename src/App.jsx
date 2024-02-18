@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Button from "./components/Button";
-import { formatearDinero } from "./helpers"; 
+import { formatearDinero, calcularTotalAPagar, calcularPagoMensual } from "./helpers"; 
 
 function App() {
 
   const [cantidad, setCantidad] = useState(10000);
   const [plazo, setPlazo] = useState(6);
+  const [total, setTotal] = useState(0);
+  const [pagoMensual, setPagoMensual] = useState(0);
+
+  useEffect(() => {
+    setTotal(calcularTotalAPagar(cantidad, plazo));
+  }, [cantidad, plazo]);
+
+  useEffect(() => {
+    setPagoMensual(calcularPagoMensual(total, plazo));
+  }, [total]);
 
   const MIN = 0;
   const MAX = 20000;
   const STEP = 100;
 
   const handleChangeCantidad = (e) => {
-    setCantidad(e.target.value);
+    setCantidad(+e.target.value);
   }
 
   const handleChangePlazo = (e) => {
-       setPlazo(e.target.value);
+    setPlazo(+e.target.value);
   }
 
   const handleClickDecrementarCantidad = () => {
@@ -62,6 +72,13 @@ function App() {
           <option value="12">12 meses</option>
           <option value="24">24 meses</option>
         </select>
+
+        <div className="mt-5 space-y-3 bg-violet-700 p-5">
+        <h2 className="mt-10 text-2xl font-extrabold text-slate-50 text-center">Resumen <span className="text-green-500 font-bold text-2xl">de pagos</span></h2>
+          <p className="text-slate-50 text-2xl">Plazo: {plazo} meses</p>
+          <p className="text-slate-50 text-2xl">Monto a pagar: {formatearDinero(total)}</p>         
+          <p className="text-slate-50 text-2xl">Mensuales: {formatearDinero(pagoMensual)}</p>
+        </div>
     </div>    
   )
 }
